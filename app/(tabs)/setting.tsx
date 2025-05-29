@@ -1,29 +1,57 @@
-import React from 'react';
-import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, TextInput, Button } from 'react-native';
 
-const userData = {
-  name: 'João Silva',
-  email: 'joao.silva@email.com',
-  createdClothes: [
-    { id: '1', name: 'Camiseta Personalizada', image: 'https://via.placeholder.com/100' },
-    { id: '2', name: 'Calça Jeans Customizada', image: 'https://via.placeholder.com/100' },
-    { id: '3', name: 'Jaqueta Estilizada', image: 'https://via.placeholder.com/100' },
-  ],
-};
+const ProfileScreen = () => {
+  const [createdClothes, setCreatedClothes] = useState([
+    { id: '1', name: 'Camisa Personalizada', image: 'https://via.placeholder.com/100' },
+    { id: '2', name: 'Calça Customizada', image: 'https://via.placeholder.com/100' },
+  ]);
 
-export default function ProfileScreen() {
+  const [newClothingName, setNewClothingName] = useState('');
+  const [newClothingImage, setNewClothingImage] = useState('');
+
+  const handleAddClothing = () => {
+    if (newClothingName && newClothingImage) {
+      const newClothing = {
+        id: (createdClothes.length + 1).toString(),
+        name: newClothingName,
+        image: newClothingImage,
+      };
+      setCreatedClothes([...createdClothes, newClothing]);
+      setNewClothingName('');
+      setNewClothingImage('');
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {/* Informações do usuário */}
+      {/* Informações do Usuário */}
       <View style={styles.userInfo}>
-        <Text style={styles.userName}>{userData.name}</Text>
-        <Text style={styles.userEmail}>{userData.email}</Text>
+        <Text style={styles.userName}>João Silva</Text>
+        <Text style={styles.userEmail}>joao.silva@email.com</Text>
       </View>
 
-      {/* Lista de roupas criadas */}
+      {/* Formulário para Adicionar Roupas */}
+      <View style={styles.addClothingForm}>
+        <TextInput
+          style={styles.input}
+          placeholder="Nome da Roupa"
+          value={newClothingName}
+          onChangeText={setNewClothingName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="URL da Imagem"
+          value={newClothingImage}
+          onChangeText={setNewClothingImage}
+        />
+        <Button title="Adicionar Roupa" onPress={handleAddClothing} />
+      </View>
+
+      {/* Lista de Roupas Criadas */}
       <Text style={styles.sectionTitle}>Roupas Criadas</Text>
       <FlatList
-        data={userData.createdClothes}
+        data={createdClothes}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.clothingItem}>
@@ -34,7 +62,7 @@ export default function ProfileScreen() {
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -53,6 +81,16 @@ const styles = StyleSheet.create({
   userEmail: {
     fontSize: 16,
     color: '#666',
+  },
+  addClothingForm: {
+    marginBottom: 24,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 8,
+    marginBottom: 8,
   },
   sectionTitle: {
     fontSize: 20,
@@ -74,3 +112,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default ProfileScreen;

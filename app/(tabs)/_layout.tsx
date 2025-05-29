@@ -41,7 +41,8 @@ export default function Layout() {
                     title: '',
                     headerTitle: 'Meu Perfil',
                     headerTitleStyle: {
-                        color: '#fff'
+                        color: '#fff',
+                        
                     },
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
                 }}
